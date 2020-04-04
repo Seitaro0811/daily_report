@@ -4,8 +4,8 @@
     <c:param name="content">
         <c:choose>
             <c:when test="${employee != null}">
-                <h2>id : ${employee.id} の従業員情報 編集ページ</h2>
-                <p>(パスワードは変更する場合のみ入力してください)</p>
+                <h2>id : ${employee.id} の従業員情報　編集ページ</h2>
+                <p>（パスワードは変更する場合のみ入力してください）</p>
                 <form method="POST" action="<c:url value='/employees/update' />">
                     <c:import url="_form.jsp" />
                 </form>
@@ -16,10 +16,11 @@
                 </form>
                 <script>
                 function confirmDestroy() {
-                    if(confirm("本当に削除してよろしいですか？")) {
-                        ducument.forms[1].submit();
+                        if(confirm("本当に削除してよろしいですか？")) {
+                            document.forms[1].submit();
+                        }
                     }
-                }
+
                 </script>
             </c:when>
             <c:otherwise>
