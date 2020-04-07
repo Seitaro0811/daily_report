@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Employee;
 import models.Report;
 import utils.DBUtil;
 
@@ -35,24 +36,54 @@ public class ReportsIndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         EntityManager em = DBUtil.createEntityManager();
 
+        List<Employee> employees = em.createNamedQuery("getAllEmployees", Employee.class)
+                                        .getResultList();
+
         int page;
         try {
             page = Integer.parseInt(request.getParameter("page"));
         } catch(Exception e) {
             page = 1;
         }
-        List<Report> reports = em.createNamedQuery("getAllReports", Report.class)
-                                    .setFirstResult(15 * (page - 1))
-                                    .setMaxResults(15)
-                                    .getResultList();
 
-        long reports_count = (long)em.createNamedQuery("getReportsCount", Long.class)
-                                        .getSingleResult();
+        String refine_id = "";
+        try {
+            refine_id = request.getParameter("id");
+
+            Integer id = Integer.parseInt(refine_id);
+
+            List<Report> reports = em.createNamedQuery("getRefinedReports", Report.class)
+                                        .setParameter("employee_id", id)
+                                        .setFirstResult(15 * (page - 1))
+                                        .setMaxResults(15)
+                                        .getResultList();
+
+            long reports_count = (long)em.createNamedQuery("getRefinedReportsCount", Long.class)
+                                            .setParameter("employee_id", id)
+                                            .getSingleResult();
+
+            request.setAttribute("reports", reports);
+            request.setAttribute("reports_count", reports_count);
+            request.setAttribute("id", id);
+
+
+        } catch(Exception e) {
+            List<Report> reports = em.createNamedQuery("getAllReports", Report.class)
+                                        .setFirstResult(15 * (page - 1))
+                                        .setMaxResults(15)
+                                        .getResultList();
+
+            long reports_count = (long)em.createNamedQuery("getReportsCount", Long.class)
+                                            .getSingleResult();
+
+            request.setAttribute("reports", reports);
+            request.setAttribute("reports_count", reports_count);
+        }
 
         em.close();
 
-        request.setAttribute("reports", reports);
-        request.setAttribute("reports_count", reports_count);
+        request.setAttribute("employees", employees);
+
         request.setAttribute("page", page);
         if(request.getSession().getAttribute("flush") != null) {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));

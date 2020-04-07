@@ -9,6 +9,17 @@
             </div>
         </c:if>
         <h2>日報　一覧</h2>
+        <form  name="refine" method="GET" action="<c:url value='/reports/index' />">
+            <select name="id">
+                <option selected value="">全て</option>
+                <c:forEach var="employee" items="${employees}">
+                    <option value="${employee.id}">
+                        <c:out value="${employee.name}" />
+                    </option>
+                </c:forEach>
+            </select>
+            <button type="submit">絞り込み</button>
+        </form>
         <table id="report_list">
             <tbody>
                 <tr>
@@ -36,7 +47,7 @@
                         <c:out value="${i}" />&nbsp;
                     </c:when>
                     <c:otherwise>
-                        <a href="<c:url value='/reports/index?page=${i}' />"><c:out value="${i}" /></a>&nbsp;
+                        <a href="<c:url value='/reports/index?page=${i}&&id=${id}' />"><c:out value="${i}" /></a>&nbsp;
                     </c:otherwise>
                 </c:choose>
             </c:forEach>

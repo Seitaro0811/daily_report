@@ -164,3 +164,7 @@ pre {
 h3 {
     font-size: larger;
 }
+
+form[name=refine] {
+    text-align: right;
+}
