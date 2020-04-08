@@ -37,6 +37,17 @@
                 <c:if test="${sessionScope.login_employee.id == report.employee.id}">
                     <p><a href="<c:url value="/reports/edit?id=${report.id}" />">この日報を編集する</a></p>
                 </c:if>
+
+                <c:if test="${sessionScope.login_employee.admin_flag == 1}">
+                    <form name="comment" method="POST" action="<c:url value='/comments/create' />">
+                        <label for="content">コメント</label><br />
+                        <textarea name="content" rows="10" cols="50"></textarea><br />
+                        <input type="hidden" name="report_id" value="${report.id}" />
+                        <input type="hidden" name="name" value="${login_employee.name}" />
+                        <input type="hidden" name="_token" value="${_token}" />
+                        <button type="submit">投稿</button>
+                    </form>
+                </c:if>
             </c:when>
             <c:otherwise>
                 <h2>お探しのデータは見つかりませんでした。</h2>
