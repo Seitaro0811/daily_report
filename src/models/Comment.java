@@ -7,9 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -36,12 +34,20 @@ public class Comment {
         this.id = id;
     }
 
-    public Report getReport() {
-        return report;
+    public Integer getReport_id() {
+        return report_id;
     }
 
-    public void setReport(Report report) {
-        this.report = report;
+    public void setReport_id(Integer report_id) {
+        this.report_id = report_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getContent() {
@@ -65,9 +71,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "report_id", nullable = false)
-    private Report report;
+    @Column(name = "report_id", nullable = false)
+    private Integer report_id;
+
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Lob
     @Column(name = "content", nullable = false)
