@@ -16,11 +16,11 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(
             name = "getAllComments",
-            query = "SELECT c FROM Comment AS c ORDER BY c.id DESC"
+            query = "SELECT c FROM Comment AS c WHERE c.report_id = :report_id ORDER BY c.id DESC"
             ),
     @NamedQuery(
             name = "getCommentsCount",
-            query = "SELECT COUNT(c) FROM Comment AS c"
+            query = "SELECT COUNT(c) FROM Comment AS c WHERE c.report_id = :report_id"
             )
 })
 
